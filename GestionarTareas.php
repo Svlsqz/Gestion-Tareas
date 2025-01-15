@@ -33,6 +33,5 @@ class GestionarTareas {
         echo "Tarea con ID {$id} no encontrada.\n";
     }
     
-    
 }
 ?>
