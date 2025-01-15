@@ -32,6 +32,15 @@ switch ($method) {
                 echo json_encode(['message' => "Tarea con ID $id eliminada correctamente"]);
             }
         break;
+
+        case 'PUT':
+            // PUT /tareas/{id}: Para marcar una tarea como completada
+            if ($path[0] === 'tareas' && isset($path[1])) {
+                $id = (int)$path[1];
+                $gestor->marcarTareaCompletada($id);
+                echo json_encode(['message' => "Tarea con ID $id marcada como completada"]);
+            }
+            break;
 }
 
 
