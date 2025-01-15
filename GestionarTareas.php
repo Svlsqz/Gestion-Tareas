@@ -32,6 +32,16 @@ class GestionarTareas {
         }
         echo "Tarea con ID {$id} no encontrada.\n";
     }
+
+    public function listarTareasPendientes() {
+        echo "Tareas pendientes:\n";
+        foreach ($this->tareas as $tarea) {
+            if (!$tarea->estaCompletada()) {
+                echo "- ID: {$tarea->getId()}, Descripción: {$tarea->getDescripcion()}\n";
+            }
+        }
+    }
+    
     
 }
 ?>
