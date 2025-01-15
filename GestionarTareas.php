@@ -21,6 +21,18 @@ class GestionarTareas {
         }
         echo "Tarea con ID {$id} no encontrada.\n";
     }
+
+    public function marcarTareaCompletada($id) {
+        foreach ($this->tareas as $tarea) {
+            if ($tarea->getId() == $id) {
+                $tarea->marcarCompletada();
+                echo "Tarea con ID {$id} marcada como completada.\n";
+                return;
+            }
+        }
+        echo "Tarea con ID {$id} no encontrada.\n";
+    }
+    
     
 }
 ?>
