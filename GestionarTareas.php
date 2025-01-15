@@ -3,23 +3,40 @@ include 'Tarea.php';
 
 class GestionarTareas {
     private $tareas =[];
+    private $archivo;
+
+    public function __construct($archivo) {
+        $this->archivo = $archivo;
+
+        if (!file_exists($archivo)) {
+            file_put_contents($archivo, '');
+        }
+
+        $this->tareas = $this->cargarTareas();
+    }
+
+    private function cargarTareas() {
+        if (!file_exists($this->archivo)) {
+            return [];
+        }
+        $contenido = file_get_contents($this->archivo);
+        $tareas = unserialize($contenido); // Deserializar las tareas
+        return $tareas ? $tareas : [];
+    }
 
     public function agregarTarea($descripcion) {
         $id = count($this->tareas) + 1; 
         $nuevaTarea = new Tarea($id, $descripcion);
         $this->tareas[] = $nuevaTarea;
+        $this->guardarTareas();
         echo "Tarea añadida: {$descripcion} (ID: {$id})\n";
     }   
 
     public function eliminarTarea($id) {
-        foreach ($this->tareas as $key => $tarea) {
-            if ($tarea->getId() == $id) {
-                unset($this->tareas[$key]);
-                echo "Tarea con ID {$id} eliminada.\n";
-                return;
-            }
-        }
-        echo "Tarea con ID {$id} no encontrada.\n";
+        $this->tareas = array_filter($this->tareas, function($tarea) use ($id) {
+            return $tarea->getId() != $id;
+        });
+        $this->guardarTareas();
     }
 
     public function marcarTareaCompletada($id) {
@@ -27,6 +44,7 @@ class GestionarTareas {
             if ($tarea->getId() == $id) {
                 $tarea->tareaCompletada();
                 echo "Tarea con ID {$id} marcada como completada.\n";
+                $this->guardarTareas();
                 return;
             }
         }
@@ -35,20 +53,18 @@ class GestionarTareas {
 
     public function listarTareasPendientes() {
         echo "Tareas pendientes:\n";
-        foreach ($this->tareas as $tarea) {
-            if (!$tarea->isCompletada()) {
-                echo "- ID: {$tarea->getId()}, Descripción: {$tarea->getDescripcion()}\n";
-            }
+        $pendientes = array_filter($this->tareas, function($tarea) {
+            return !$tarea->isCompletada();
+        });
+
+        foreach ($pendientes as $tarea) {
+            echo $tarea . PHP_EOL;
         }
     }
 
-    public function guardarTareas($archivo) {
-        $contenido = "";
-        foreach ($this->tareas as $tarea) {
-            $estado = $tarea->isCompletada() ? "completada" : "pendiente";
-            $contenido .= "{$tarea->getId()}|{$tarea->getDescripcion()}|{$estado}\n";
-        }
-        file_put_contents($archivo, $contenido);
+    private function guardarTareas() {
+        $contenido = serialize($this->tareas);
+        file_put_contents($this->archivo, $contenido);
     }
     
     
