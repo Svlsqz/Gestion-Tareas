@@ -10,5 +10,17 @@ class GestionarTareas {
         $this->tareas[] = $nuevaTarea;
         echo "Tarea añadida: {$descripcion} (ID: {$id})\n";
     }   
+
+    public function eliminarTarea($id) {
+        foreach ($this->tareas as $key => $tarea) {
+            if ($tarea->getId() == $id) {
+                unset($this->tareas[$key]);
+                echo "Tarea con ID {$id} eliminada.\n";
+                return;
+            }
+        }
+        echo "Tarea con ID {$id} no encontrada.\n";
+    }
+    
 }
 ?>
