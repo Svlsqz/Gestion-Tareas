@@ -66,6 +66,15 @@ class GestionarTareas {
         $contenido = serialize($this->tareas);
         file_put_contents($this->archivo, $contenido);
     }
+
+    public function obtenerTarea($id) {
+        foreach ($this->tareas as $tarea) {
+            if ($tarea->getId() == $id) {
+                return $tarea;
+            }
+        }
+        return null;
+    }
     
     
     
