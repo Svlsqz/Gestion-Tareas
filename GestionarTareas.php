@@ -25,7 +25,7 @@ class GestionarTareas {
     public function marcarTareaCompletada($id) {
         foreach ($this->tareas as $tarea) {
             if ($tarea->getId() == $id) {
-                $tarea->marcarCompletada();
+                $tarea->tareaCompletada();
                 echo "Tarea con ID {$id} marcada como completada.\n";
                 return;
             }
@@ -36,11 +36,21 @@ class GestionarTareas {
     public function listarTareasPendientes() {
         echo "Tareas pendientes:\n";
         foreach ($this->tareas as $tarea) {
-            if (!$tarea->estaCompletada()) {
+            if (!$tarea->isCompletada()) {
                 echo "- ID: {$tarea->getId()}, Descripción: {$tarea->getDescripcion()}\n";
             }
         }
     }
+
+    public function guardarTareas($archivo) {
+        $contenido = "";
+        foreach ($this->tareas as $tarea) {
+            $estado = $tarea->isCompletada() ? "completada" : "pendiente";
+            $contenido .= "{$tarea->getId()}|{$tarea->getDescripcion()}|{$estado}\n";
+        }
+        file_put_contents($archivo, $contenido);
+    }
+    
     
     
 }
