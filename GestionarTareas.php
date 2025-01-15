@@ -80,3 +80,9 @@ class GestionarTareas {
     
 }
 ?>
+
+<!-- Enfoque y Decisiones de Diseño -->
+<!-- Para resolver el problema se implementó una clase `GestionarTareas` que maneja las operaciones CRUD básicas sobre las tareas, almacenándolas en un archivo de texto. 
+ Se utilizó la serialización para guardar y cargar las tareas. 
+ La API RESTful se implementó en `api.php` utilizando el método HTTP adecuado para cada operación. 
+ Se eligió este enfoque por su simplicidad y facilidad de implementación, asegurando que la aplicación sea fácil de mantener y modular para extender en el futuro. -->
